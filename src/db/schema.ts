@@ -1,5 +1,11 @@
 import { createId } from '@paralleldrive/cuid2'
-import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
+import {
+  integer,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
+} from 'drizzle-orm/pg-core'
 
 export const artist = pgTable('artist', {
   id: text('id')
@@ -56,3 +62,48 @@ export const music = pgTable('music', {
     .notNull()
     .defaultNow(),
 })
+
+export const musicArtist = pgTable(
+  'music_artist',
+  {
+    musicId: text('music_id')
+      .notNull()
+      .references(() => music.id),
+    artistId: text('artist_id')
+      .notNull()
+      .references(() => artist.id),
+  },
+  t => ({
+    compoundKey: uniqueIndex('music_artist_pk').on(t.musicId, t.artistId),
+  })
+)
+
+export const musicPlaylist = pgTable(
+  'music_playlist',
+  {
+    musicId: text('music_id')
+      .notNull()
+      .references(() => music.id),
+    playlistId: text('playlist_id')
+      .notNull()
+      .references(() => playlist.id),
+  },
+  t => ({
+    compoundKey: uniqueIndex('music_playlist_pk').on(t.musicId, t.playlistId),
+  })
+)
+
+export const albumMusic = pgTable(
+  'album_music',
+  {
+    albumId: text('album_id')
+      .notNull()
+      .references(() => album.id),
+    musicId: text('music_id')
+      .notNull()
+      .references(() => music.id),
+  },
+  t => ({
+    compoundKey: uniqueIndex('album_music_pk').on(t.albumId, t.musicId),
+  })
+)
