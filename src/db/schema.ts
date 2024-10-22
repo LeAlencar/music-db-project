@@ -48,6 +48,9 @@ export const playlist = pgTable('playlist', {
     .primaryKey()
     .$defaultFn(() => createId()),
   title: text('title').notNull(),
+  userId: text('user_id')
+    .references(() => user.id)
+    .notNull(),
   createdAt: timestamp('created_at', { withTimezone: true })
     .notNull()
     .defaultNow(),
