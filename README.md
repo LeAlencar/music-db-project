@@ -11,6 +11,75 @@ Caio Arnoni RA: 22.221.019-7
 
 Mateus Rocha RA: 22.222.002-2
 
+## Requisitos do Sistema
+
+1. **Música**: Cada música tem um título, uma duração em segundos e pode fazer parte de um ou mais discos. Além disso, uma mesma música pode ser tocada por diferentes artistas.
+2. **Artista**: Cada artista tem um nome e sua data de nascimento registrada.
+3. **Disco**: Cada disco tem um título, uma data de lançamento e é de um único artista, mas pode ter várias músicas.
+4. **Usuário**: Cada usuário tem um nome, um e-mail (que deve ser único) e uma data em que se cadastrou. Eles podem criar e gerenciar suas playlists.
+5. **Playlist**: Cada playlist tem um título e pertence a um usuário. Ela pode ter várias músicas, e as mesmas músicas podem aparecer em várias playlists diferentes.
+
+## Modelagem do Banco de Dados
+
+A modelagem foi realizada utilizando um diagrama Entidade-Relacionamento (ER) e normalizada até a Terceira Forma Normal (3FN). A estrutura de relacionamentos é a seguinte:
+
+- **Música** é interpretada por um ou mais **Artistas**.
+- **Disco** contém várias **Músicas** e é associado a um **Artista**.
+- **Usuário** cria uma ou mais **Playlists**.
+- **Playlist** contém várias **Músicas**, que podem estar em várias **Playlists**.
+
+### Diagrama Entidade-Relacionamento (ER)
+
+As entidades e seus atributos estão organizados da seguinte maneira:
+
+- **Musica**
+  - `ID_Musica`: Identificador único da música (chave primária).
+  - `Titulo`: Título da música.
+  - `Duracao`: Duração da música em segundos.
+  - `ID_Disco`: Chave estrangeira que referencia um disco.
+
+- **Artista**
+  - `ID_Artista`: Identificador único do artista (chave primária).
+  - `Nome`: Nome do artista.
+  - `DataNascimento`: Data de nascimento do artista.
+
+- **Disco**
+  - `ID_Disco`: Identificador único do disco (chave primária).
+  - `Titulo`: Título do disco.
+  - `DataLancamento`: Data de lançamento do disco.
+  - `ID_Artista`: Chave estrangeira que referencia o artista associado ao disco.
+
+- **Usuario**
+  - `ID_Usuario`: Identificador único do usuário (chave primária).
+  - `Nome`: Nome do usuário.
+  - `Email`: Endereço de e-mail (único).
+  - `DataRegistro`: Data de registro do usuário no sistema.
+
+- **Playlist**
+  - `ID_Playlist`: Identificador único da playlist (chave primária).
+  - `Titulo`: Título da playlist.
+  - `ID_Usuario`: Chave estrangeira que referencia o usuário dono da playlist.
+
+### Relacionamentos:
+
+- **Musica_Artista**
+  - Relaciona músicas a artistas.
+  - Atributos: `ID_Musica`, `ID_Artista` (chave composta).
+
+- **Musica_Playlist**
+  - Relaciona músicas a playlists.
+  - Atributos: `ID_Musica`, `ID_Playlist` (chave composta).
+
+- **Disco_Musica**
+  - Relaciona discos a músicas.
+  - Atributos: `ID_Disco`, `ID_Musica` (chave composta).
+
+## Tecnologias Utilizadas
+
+- Linguagem de Modelagem: SQL
+- Modelagem de Dados: Diagrama Entidade-Relacionamento (ER)
+- Banco de Dados Relacional (ex: MySQL, PostgreSQL)
+
 ## Diagrama Realacional
 
 ![image](https://github.com/user-attachments/assets/15f1ea84-f1b8-4827-9440-9ac481dd8e20)
