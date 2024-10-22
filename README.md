@@ -1,4 +1,4 @@
-Integrantes: Caio Arnoni / Leandro de Brito Alencar / Mateus Rocha
+Integrantes: Caio Arnoni / Leandro de Brito Alencar / Mateus Rocha <br>
 RA: 22.221.019-7 / 22.222.034-5 / 22.222.002-2
 
 1. Liste o título de todas as músicas e suas durações.
