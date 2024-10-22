@@ -3,9 +3,12 @@
 Este projeto tem como objetivo apresentar o conhecimento adquirido ao longo do curso de Banco de Dados, com o objetivo de ser utilizado em outros projetos.
 Fizemos todo o código usando Node com Fastify, PostgreSQL e DrizzleORM.
 
-Integrantes:
+#### Integrantes:
+
 Leandro de Brito Alencar RA: 22.222.034-5
+
 Caio Arnoni RA: 22.221.019-7
+
 Mateus Rocha RA: 22.222.002-2
 
 ## Como Rodar o projeto
