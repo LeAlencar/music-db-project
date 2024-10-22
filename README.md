@@ -3,6 +3,11 @@
 Este projeto tem como objetivo apresentar o conhecimento adquirido ao longo do curso de Banco de Dados, com o objetivo de ser utilizado em outros projetos.
 Fizemos todo o código usando Node com Fastify, PostgreSQL e DrizzleORM.
 
+Integrantes:
+Leandro de Brito Alencar RA: 22.222.034-5
+Caio Arnoni RA: 22.221.019-7
+Mateus Rocha RA: 22.222.002-2
+
 ## Como Rodar o projeto
 
 Para rodar o projeto é necessário ter Docker instalado em sua máquina e o Node também. Após isso podemos seguir com os comandos abaixo.
@@ -36,9 +41,6 @@ npm run seed
 ```bash
 npm run studio
 ```
-
-Integrantes: Caio Arnoni / Leandro de Brito Alencar / Mateus Rocha
-RA: 22.221.019-7 / 22.222.034-5 / 22.222.002-2
 
 ### Questões
 
