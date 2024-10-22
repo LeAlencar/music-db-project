@@ -14,8 +14,8 @@ import {
 
 async function seed() {
   await db.delete(user)
-  await db.delete(artist)
   await db.delete(album)
+  await db.delete(artist)
   await db.delete(albumMusic)
   await db.delete(playlist)
   await db.delete(music)
@@ -69,6 +69,36 @@ async function seed() {
         artistId: artists[1].id,
         launchDate: faker.date.future(),
       },
+      {
+        title: faker.commerce.productName(),
+        artistId: artists[1].id,
+        launchDate: faker.date.future(),
+      },
+      {
+        title: faker.commerce.productName(),
+        artistId: artists[1].id,
+        launchDate: faker.date.future(),
+      },
+      {
+        title: faker.commerce.productName(),
+        artistId: artists[1].id,
+        launchDate: faker.date.future(),
+      },
+      {
+        title: faker.commerce.productName(),
+        artistId: artists[1].id,
+        launchDate: faker.date.future(),
+      },
+      {
+        title: faker.commerce.productName(),
+        artistId: artists[1].id,
+        launchDate: faker.date.future(),
+      },
+      {
+        title: faker.commerce.productName(),
+        artistId: artists[1].id,
+        launchDate: faker.date.future(),
+      },
     ])
     .returning()
 
@@ -82,10 +112,75 @@ async function seed() {
     {
       title: faker.commerce.productName(),
       duration: faker.number.int({ min: 1, max: 100 }),
-    }
-  ])
+    },
+    {
+      title: faker.commerce.productName(),
+      duration: faker.number.int({ min: 1, max: 100 }),
+    },
+    {
+      title: faker.commerce.productName(),
+      duration: faker.number.int({ min: 1, max: 100 }),
+    },
+    {
+      title: faker.commerce.productName(),
+      duration: faker.number.int({ min: 1, max: 100 }),
+    },
+    {
+      title: faker.commerce.productName(),
+      duration: faker.number.int({ min: 1, max: 100 }),
+    },
+    {
+      title: faker.commerce.productName(),
+      duration: faker.number.int({ min: 1, max: 100 }),
+    },
+    {
+      title: faker.commerce.productName(),
+      duration: faker.number.int({ min: 1, max: 100 }),
+    },
+  ]).returning()
 
   console.log(chalk.yellowBright('✅ Created musics!'))
+
+  const playlists = await db.insert(playlist).values([
+    { title: faker.music.genre() },
+    { title: faker.music.genre() },
+    { title: faker.music.genre() },
+  ]).returning()
+
+  console.log(chalk.yellowBright('✅ Created playlists!'))
+
+  await db.insert(musicArtist).values(
+    musics.flatMap(music => 
+      artists.map(artist => ({
+        musicId: music.id,
+        artistId: artist.id,
+      }))
+    )
+  )
+
+  console.log(chalk.yellowBright('✅ Created music-artist relationships!'))
+
+  await db.insert(musicPlaylist).values(
+    musics.flatMap(music => 
+      playlists.map(playlist => ({
+        musicId: music.id,
+        playlistId: playlist.id,
+      }))
+    )
+  )
+
+  console.log(chalk.yellowBright('✅ Created music-playlist relationships!'))
+
+  await db.insert(albumMusic).values(
+    albums.flatMap(album => 
+      musics.slice(0, 4).map(music => ({
+        albumId: album.id,
+        musicId: music.id,
+      }))
+    )
+  )
+
+  console.log(chalk.yellowBright('✅ Created album-music relationships!'))
 }
 
 seed().finally(() => {
