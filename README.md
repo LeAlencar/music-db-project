@@ -4,6 +4,7 @@ RA: 22.221.019-7 / 22.222.034-5 / 22.222.002-2
 1. Liste o título de todas as músicas e suas durações.
 
 SELECT Titulo, Duracao
+
 FROM Musica;
 
 2. Encontre o nome de todos os artistas que têm mais de 5 músicas em seu repertório.
