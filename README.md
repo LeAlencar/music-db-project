@@ -54,210 +54,205 @@ npm run studio
 1. Liste o título de todas as músicas e suas durações.
 
 ```sql
-SELECT Titulo, Duracao
-FROM Musica
+SELECT title, duration FROM music;
 ```
 
 2. Encontre o nome de todos os artistas que têm mais de 5 músicas em seu repertório.
 
 ```sql
-SELECT a.Nome
-FROM Artista a
-JOIN Musica_Artista ma ON a.ID_Artista = ma.ID_Artista
-GROUP BY a.ID_Artista, a.Nome
-HAVING COUNT(DISTINCT ma.ID_Musica) > 5;
+SELECT a.name
+FROM artist a
+JOIN music_artist ma ON a.id = ma.artist_id
+GROUP BY a.id, a.name
+HAVING COUNT(DISTINCT ma.music_id) > 5;
 ```
 
 3. Quais são os títulos dos discos lançados após 2020?
 
 ```sql
-SELECT Titulo
-FROM Disco
-WHERE DataLancamento > '2020-12-31';
+SELECT title
+FROM album
+WHERE launch_date > '2020-01-01';
 ```
 
 4. Liste os títulos das músicas e os nomes dos artistas que as interpretam, ordenados pelo título da música.
 
 ```sql
-SELECT m.Titulo, a.Nome
-FROM Musica m
-JOIN Musica_Artista ma ON m.ID_Musica = ma.ID_Musica
-JOIN Artista a ON ma.ID_Artista = a.ID_Artista
-ORDER BY m.Titulo;
+SELECT m.title, a.name
+FROM music m
+JOIN music_artist ma ON m.id = ma.music_id
+JOIN artist a ON ma.artist_id = a.id
+ORDER BY m.title;
 ```
 
 5. Encontre os títulos das playlists que contêm a música com o título 'Imagine'.
 
 ```sql
-SELECT DISTINCT p.Titulo
-FROM Playlist p
-JOIN Musica_Playlist mp ON p.ID_Playlist = mp.ID_Playlist
-JOIN Musica m ON mp.ID_Musica = m.ID_Musica
-WHERE m.Titulo = 'Imagine';
+SELECT p.title
+FROM playlist p
+JOIN music_playlist mp ON p.id = mp.playlist_id
+JOIN music m ON mp.music_id = m.id
+WHERE m.title = 'Imagine';
 ```
 
 6. Liste os usuários que criaram playlists que contêm músicas do disco 'Abbey Road'.
 
 ```sql
-SELECT DISTINCT u.Nome
-FROM Usuario u
-JOIN Playlist p ON u.ID_Usuario = p.ID_Usuario
-JOIN Musica_Playlist mp ON p.ID_Playlist = mp.ID_Playlist
-JOIN Musica m ON mp.ID_Musica = m.ID_Musica
-JOIN Disco d ON m.ID_Disco = d.ID_Disco
-WHERE d.Titulo = 'Abbey Road';
+SELECT DISTINCT u.name
+FROM "user" u
+JOIN playlist p ON u.id = p.user_id
+JOIN music_playlist mp ON p.id = mp.playlist_id
+JOIN music m ON mp.music_id = m.id
+JOIN album_music am ON m.id = am.music_id
+JOIN album a ON am.album_id = a.id
+WHERE a.title = 'Modern Metal';
 ```
 
 7. Qual é a duração média das músicas de um artista específico?
 
 ```sql
-SELECT AVG(m.Duracao) as DuracaoMedia
-FROM Musica m
-JOIN Musica_Artista ma ON m.ID_Musica = ma.ID_Musica
-JOIN Artista a ON ma.ID_Artista = a.ID_Artista
-WHERE a.Nome = 'Nome do Artista';
+SELECT AVG(m.duration) as avg_duration
+FROM music m
+JOIN music_artist ma ON m.id = ma.music_id
+JOIN artist a ON ma.artist_id = a.id
+WHERE a.id = 'k3bgt0ese5fsvc';
 ```
 
 8. Encontre todos os artistas que não têm músicas.
 
 ```sql
-SELECT a.Nome
-FROM Artista a
-LEFT JOIN Musica_Artista ma ON a.ID_Artista = ma.ID_Artista
-WHERE ma.ID_Musica IS NULL;
+SELECT a.name
+FROM artist a
+LEFT JOIN music_artist ma ON a.id = ma.artist_id
+WHERE ma.music_id IS NULL;
 ```
 
 9. Liste todos os discos que contêm mais de 10 músicas.
 
 ```sql
-SELECT d.Titulo
-FROM Disco d
-JOIN Disco_Musica dm ON d.ID_Disco = dm.ID_Disco
-GROUP BY d.ID_Disco, d.Titulo
-HAVING COUNT(dm.ID_Musica) > 10;
+SELECT a.title
+FROM album a
+JOIN album_music am ON a.id = am.album_id
+GROUP BY a.id, a.title
+HAVING COUNT(am.music_id) > 10;
 ```
 
 10. Quais são os nomes dos artistas que têm discos lançados antes de 2010 e que têm músicas na playlist "Top 50"?
 
 ```sql
-SELECT DISTINCT a.Nome
-FROM Artista a
-JOIN Disco d ON a.ID_Artista = d.ID_Artista
-JOIN Musica_Artista ma ON a.ID_Artista = ma.ID_Artista
-JOIN Musica m ON ma.ID_Musica = m.ID_Musica
-JOIN Musica_Playlist mp ON m.ID_Musica = mp.ID_Musica
-JOIN Playlist p ON mp.ID_Playlist = p.ID_Playlist
-WHERE d.DataLancamento < '2010-01-01'
-AND p.Titulo = 'Top 50';
+SELECT DISTINCT ar.name
+FROM artist ar
+JOIN album al ON ar.id = al.artist_id
+JOIN music_artist ma ON ar.id = ma.artist_id
+JOIN music_playlist mp ON ma.music_id = mp.music_id
+WHERE al.launch_date < '2020-01-01'
+AND mp.playlist_id = 'playlist_id_específico';
 ```
 
 11. Quais músicas são interpretadas por mais de um artista?
 
 ```sql
-SELECT m.Titulo
-FROM Musica m
-JOIN Musica_Artista ma ON m.ID_Musica = ma.ID_Musica
-GROUP BY m.ID_Musica, m.Titulo
-HAVING COUNT(DISTINCT ma.ID_Artista) > 1;
+SELECT m.title
+FROM music m
+JOIN music_artist ma ON m.id = ma.music_id
+GROUP BY m.id, m.title
+HAVING COUNT(DISTINCT ma.artist_id) > 1;
 ```
 
 12. Liste os títulos das músicas que aparecem em mais de uma playlist.
 
 ```sql
-SELECT m.Titulo
-FROM Musica m
-JOIN Musica_Playlist mp ON m.ID_Musica = mp.ID_Musica
-GROUP BY m.ID_Musica, m.Titulo
-HAVING COUNT(DISTINCT mp.ID_Playlist) > 1;
+SELECT m.title
+FROM music m
+JOIN music_playlist mp ON m.id = mp.music_id
+GROUP BY m.id, m.title
+HAVING COUNT(DISTINCT mp.playlist_id) > 1;
 ```
 
 13. Encontre os nomes dos usuários que têm playlists que incluem a música 'Bohemian Rhapsody'.
 
 ```sql
-SELECT DISTINCT u.Nome
-FROM Usuario u
-JOIN Playlist p ON u.ID_Usuario = p.ID_Usuario
-JOIN Musica_Playlist mp ON p.ID_Playlist = mp.ID_Playlist
-JOIN Musica m ON mp.ID_Musica = m.ID_Musica
-WHERE m.Titulo = 'Bohemian Rhapsody';
+SELECT DISTINCT u.name
+FROM "user" u
+JOIN playlist p ON u.id = p.user_id
+JOIN music_playlist mp ON p.id = mp.playlist_id
+WHERE mp.music_id = 'c2w0vrnjvx7g';
 ```
 
 14. Qual é o título da música mais longa do disco 'Dark Side of the Moon'?
 
 ```sql
-SELECT m.Titulo
-FROM Musica m
-JOIN Disco d ON m.ID_Disco = d.ID_Disco
-WHERE d.Titulo = 'Dark Side of the Moon'
-ORDER BY m.Duracao DESC
+SELECT m.title
+FROM music m
+JOIN album_music am ON m.id = am.music_id
+JOIN album a ON am.album_id = a.id
+WHERE a.id = 'nm1luwh6v1m7'
+ORDER BY m.duration DESC
 LIMIT 1;
 ```
 
 15. Liste todos os discos lançados por um artista específico em um determinado ano.
 
 ```sql
-SELECT d.Titulo
-FROM Disco d
-JOIN Artista a ON d.ID_Artista = a.ID_Artista
-WHERE a.Nome = 'Nome do Artista'
-AND EXTRACT(YEAR FROM d.DataLancamento) = 2022;
+SELECT a.title
+FROM album a
+WHERE a.artist_id = 'k3bgt0ese5fsvc'
+AND EXTRACT(YEAR FROM launch_date) = 2024;
 ```
 
 16. Quais são os nomes dos artistas que têm músicas em playlists criadas por um usuário específico?
 
 ```sql
-SELECT DISTINCT a.Nome
-FROM Artista a
-JOIN Musica_Artista ma ON a.ID_Artista = ma.ID_Artista
-JOIN Musica m ON ma.ID_Musica = m.ID_Musica
-JOIN Musica_Playlist mp ON m.ID_Musica = mp.ID_Musica
-JOIN Playlist p ON mp.ID_Playlist = p.ID_Playlist
-JOIN Usuario u ON p.ID_Usuario = u.ID_Usuario
-WHERE u.Nome = 'Nome do Usuário';
+SELECT DISTINCT ar.name
+FROM artist ar
+JOIN music_artist ma ON ar.id = ma.artist_id
+JOIN music_playlist mp ON ma.music_id = mp.music_id
+JOIN playlist p ON mp.playlist_id = p.id
+WHERE p.user_id = 'user_id_específico';
 ```
 
 17. Encontre a lista de músicas que não estão em nenhuma playlist.
 
 ```sql
-SELECT m.Titulo
-FROM Musica m
-LEFT JOIN Musica_Playlist mp ON m.ID_Musica = mp.ID_Musica
-WHERE mp.ID_Playlist IS NULL;
+SELECT m.title
+FROM music m
+LEFT JOIN music_playlist mp ON m.id = mp.music_id
+WHERE mp.playlist_id IS NULL;
 ```
 
 18. Liste os títulos das músicas e os nomes dos artistas que têm mais de 3 músicas em uma mesma playlist.
 
 ```sql
-SELECT m.Titulo, a.Nome
-FROM Musica m
-JOIN Musica_Artista ma ON m.ID_Musica = ma.ID_Artista
-JOIN Artista a ON ma.ID_Artista = a.ID_Artista
-JOIN Musica_Playlist mp ON m.ID_Musica = mp.ID_Musica
-GROUP BY m.ID_Musica, m.Titulo, a.ID_Artista, a.Nome, mp.ID_Playlist
+SELECT m.title, ar.name
+FROM music m
+JOIN music_artist ma ON m.id = ma.music_id
+JOIN artist ar ON ma.artist_id = ar.id
+JOIN music_playlist mp ON m.id = mp.music_id
+GROUP BY m.id, m.title, ar.id, ar.name, mp.playlist_id
 HAVING COUNT(*) > 3;
 ```
 
 19. Quais são os discos que contêm músicas de artistas que têm pelo menos 2 discos lançados?
 
 ```sql
-SELECT DISTINCT d.Titulo
-FROM Disco d
-JOIN Artista a ON d.ID_Artista = a.ID_Artista
-WHERE a.ID_Artista IN (
-SELECT ID_Artista
-FROM Disco
-GROUP BY ID_Artista
-HAVING COUNT(*) >= 2
+SELECT DISTINCT a.title
+FROM album a
+WHERE a.artist_id IN (
+    SELECT artist_id
+    FROM album
+    GROUP BY artist_id
+    HAVING COUNT(*) >= 2
+);
 );
 ```
 
 20. Liste todos os usuários e suas playlists, mas apenas para playlists que contêm pelo menos 5 músicas?
 
 ```sql
-SELECT u.Nome, p.Titulo
-FROM Usuario u
-JOIN Playlist p ON u.ID_Usuario = p.ID_Usuario
-JOIN Musica_Playlist mp ON p.ID_Playlist = mp.ID_Playlist
-GROUP BY u.ID_Usuario, u.Nome, p.ID_Playlist, p.Titulo
-HAVING COUNT(DISTINCT mp.ID_Musica) >= 5;
+SELECT u.name, p.title
+FROM "user" u
+JOIN playlist p ON u.id = p.user_id
+JOIN music_playlist mp ON p.id = mp.playlist_id
+GROUP BY u.id, u.name, p.id, p.title
+HAVING COUNT(DISTINCT mp.music_id) >= 5;
 ```
