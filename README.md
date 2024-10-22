@@ -37,6 +37,11 @@ docker-compose up -d
 npm install
 ```
 
+### Gerar e executar as migrations do banco de dados
+```bash
+npm run generate && npm run migrate
+```
+
 ### Fazer a seed do banco de dados
 
 ```bash
