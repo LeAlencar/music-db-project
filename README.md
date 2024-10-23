@@ -13,9 +13,9 @@ Mateus Rocha RA: 22.222.002-2
 
 ## Requisitos do Sistema
 
-1. **Música**: Cada música tem um título, uma duração em segundos e pode fazer parte de um ou mais discos. Além disso, uma mesma música pode ser tocada por diferentes artistas.
+1. **Música**: Cada música tem um título, uma duração em segundos e pode fazer parte de um ou mais álbuns. Além disso, uma mesma música pode ser tocada por diferentes artistas.
 2. **Artista**: Cada artista tem um nome e sua data de nascimento registrada.
-3. **Disco**: Cada disco tem um título, uma data de lançamento e é de um único artista, mas pode ter várias músicas.
+3. **Album**: Cada album tem um título, uma data de lançamento e é de um único artista, mas pode ter várias músicas.
 4. **Usuário**: Cada usuário tem um nome, um e-mail (que deve ser único) e uma data em que se cadastrou. Eles podem criar e gerenciar suas playlists.
 5. **Playlist**: Cada playlist tem um título e pertence a um usuário. Ela pode ter várias músicas, e as mesmas músicas podem aparecer em várias playlists diferentes.
 
@@ -24,7 +24,7 @@ Mateus Rocha RA: 22.222.002-2
 A modelagem foi realizada utilizando um diagrama Entidade-Relacionamento (ER) e normalizada até a Terceira Forma Normal (3FN). A estrutura de relacionamentos é a seguinte:
 
 - **Música** é interpretada por um ou mais **Artistas**.
-- **Disco** contém várias **Músicas** e é associado a um **Artista**.
+- **Álbum** contém várias **Músicas** e é associado a um **Artista**.
 - **Usuário** cria uma ou mais **Playlists**.
 - **Playlist** contém várias **Músicas**, que podem estar em várias **Playlists**.
 
@@ -34,31 +34,31 @@ As entidades e seus atributos estão organizados da seguinte maneira:
 
 - **Musica**
   - `ID_Musica`: Identificador único da música (chave primária).
-  - `Titulo`: Título da música.
-  - `Duracao`: Duração da música em segundos.
-  - `ID_Disco`: Chave estrangeira que referencia um disco.
+  - `title`: Título da música.
+  - `duration`: Duração da música em segundos.
+  - `created_at`: Data de registro da música no sistema.
 
 - **Artista**
   - `ID_Artista`: Identificador único do artista (chave primária).
-  - `Nome`: Nome do artista.
-  - `DataNascimento`: Data de nascimento do artista.
+  - `name`: Nome do artista.
+  - `birthday`: Data de nascimento do artista.
 
-- **Disco**
-  - `ID_Disco`: Identificador único do disco (chave primária).
-  - `Titulo`: Título do disco.
-  - `DataLancamento`: Data de lançamento do disco.
-  - `ID_Artista`: Chave estrangeira que referencia o artista associado ao disco.
+- **Album**
+  - `ID_Album`: Identificador único do álbum (chave primária).
+  - `title`: Título do álbum.
+  - `launch_date`: Data de lançamento do álbum.
+  - `artist_id`: Chave estrangeira que referencia o artista associado ao álbum.
 
 - **Usuario**
   - `ID_Usuario`: Identificador único do usuário (chave primária).
-  - `Nome`: Nome do usuário.
-  - `Email`: Endereço de e-mail (único).
-  - `DataRegistro`: Data de registro do usuário no sistema.
+  - `nome`: Nome do usuário.
+  - `email`: Endereço de e-mail (único).
+  - `created_at`: Data de registro do usuário no sistema.
 
 - **Playlist**
   - `ID_Playlist`: Identificador único da playlist (chave primária).
-  - `Titulo`: Título da playlist.
-  - `ID_Usuario`: Chave estrangeira que referencia o usuário dono da playlist.
+  - `title`: Título da playlist.
+  - `user_id`: Chave estrangeira que referencia o usuário dono da playlist.
 
 ### Relacionamentos:
 
@@ -70,9 +70,9 @@ As entidades e seus atributos estão organizados da seguinte maneira:
   - Relaciona músicas a playlists.
   - Atributos: `ID_Musica`, `ID_Playlist` (chave composta).
 
-- **Disco_Musica**
-  - Relaciona discos a músicas.
-  - Atributos: `ID_Disco`, `ID_Musica` (chave composta).
+- **Album_Musica**
+  - Relaciona álbuns a músicas.
+  - Atributos: `ID_Album`, `ID_Musica` (chave composta).
 
 ## Tecnologias Utilizadas
 
@@ -141,7 +141,7 @@ GROUP BY a.id, a.name
 HAVING COUNT(DISTINCT ma.music_id) > 5;
 ```
 
-3. Quais são os títulos dos discos lançados após 2020?
+3. Quais são os títulos dos álbuns lançados após 2020?
 
 ```sql
 SELECT title
@@ -169,7 +169,7 @@ JOIN music m ON mp.music_id = m.id
 WHERE m.title = 'Imagine';
 ```
 
-6. Liste os usuários que criaram playlists que contêm músicas do disco 'Abbey Road'.
+6. Liste os usuários que criaram playlists que contêm músicas do álbum 'Abbey Road'.
 
 ```sql
 SELECT DISTINCT u.name
@@ -201,7 +201,7 @@ LEFT JOIN music_artist ma ON a.id = ma.artist_id
 WHERE ma.music_id IS NULL;
 ```
 
-9. Liste todos os discos que contêm mais de 10 músicas.
+9. Liste todos os álbuns que contêm mais de 10 músicas.
 
 ```sql
 SELECT a.title
@@ -211,7 +211,7 @@ GROUP BY a.id, a.title
 HAVING COUNT(am.music_id) > 10;
 ```
 
-10. Quais são os nomes dos artistas que têm discos lançados antes de 2010 e que têm músicas na playlist "Top 50"?
+10. Quais são os nomes dos artistas que têm álbuns lançados antes de 2010 e que têm músicas na playlist "Top 50"?
 
 ```sql
 SELECT DISTINCT ar.name
@@ -255,7 +255,7 @@ JOIN music m ON mp.music_id = m.id
 WHERE m.title = 'Bohemian Rhapsody';
 ```
 
-14. Qual é o título da música mais longa do disco 'Dark Side of the Moon'?
+14. Qual é o título da música mais longa do álbum 'Dark Side of the Moon'?
 
 ```sql
 SELECT m.title
@@ -267,7 +267,7 @@ ORDER BY m.duration DESC
 LIMIT 1;
 ```
 
-15. Liste todos os discos lançados por um artista específico em um determinado ano.
+15. Liste todos os álbuns lançados por um artista específico em um determinado ano.
 
 ```sql
 SELECT a.title
@@ -307,7 +307,7 @@ GROUP BY m.id, m.title, ar.id, ar.name, mp.playlist_id
 HAVING COUNT(*) > 3;
 ```
 
-19. Quais são os discos que contêm músicas de artistas que têm pelo menos 2 discos lançados?
+19. Quais são os álbuns que contêm músicas de artistas que têm pelo menos 2 álbuns lançados?
 
 ```sql
 SELECT DISTINCT a.title
