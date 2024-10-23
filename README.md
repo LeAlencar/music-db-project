@@ -219,8 +219,9 @@ FROM artist ar
 JOIN album al ON ar.id = al.artist_id
 JOIN music_artist ma ON ar.id = ma.artist_id
 JOIN music_playlist mp ON ma.music_id = mp.music_id
+JOIN playlist p ON mp.playlist_id = p.id
 WHERE al.launch_date < '2020-01-01'
-AND mp.playlist_id = 'playlist_id_específico';
+AND p.name = 'Nome da Playlist';
 ```
 
 11. Quais músicas são interpretadas por mais de um artista?
@@ -250,7 +251,8 @@ SELECT DISTINCT u.name
 FROM "user" u
 JOIN playlist p ON u.id = p.user_id
 JOIN music_playlist mp ON p.id = mp.playlist_id
-WHERE mp.music_id = 'c2w0vrnjvx7g';
+JOIN music m ON mp.music_id = m.id
+WHERE m.title = 'Bohemian Rhapsody';
 ```
 
 14. Qual é o título da música mais longa do disco 'Dark Side of the Moon'?
@@ -260,7 +262,7 @@ SELECT m.title
 FROM music m
 JOIN album_music am ON m.id = am.music_id
 JOIN album a ON am.album_id = a.id
-WHERE a.id = 'nm1luwh6v1m7'
+WHERE a.title = 'Nome do Album'
 ORDER BY m.duration DESC
 LIMIT 1;
 ```
@@ -277,12 +279,11 @@ AND EXTRACT(YEAR FROM launch_date) = 2024;
 16. Quais são os nomes dos artistas que têm músicas em playlists criadas por um usuário específico?
 
 ```sql
-SELECT DISTINCT ar.name
-FROM artist ar
-JOIN music_artist ma ON ar.id = ma.artist_id
-JOIN music_playlist mp ON ma.music_id = mp.music_id
-JOIN playlist p ON mp.playlist_id = p.id
-WHERE p.user_id = 'user_id_específico';
+SELECT a.title
+FROM album a
+JOIN artist ar ON a.artist_id = ar.id
+WHERE ar.name = 'Nome do Artista'
+AND EXTRACT(YEAR FROM launch_date) = 2024;
 ```
 
 17. Encontre a lista de músicas que não estão em nenhuma playlist.
